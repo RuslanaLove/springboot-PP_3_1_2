@@ -36,9 +36,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/updateUser")
-    public String updateUser(@ModelAttribute("user") User user) {
-        user.setId(user.getId());
-        userService.updateUser(user);
+    public String updateUser(@RequestParam("id") Long id, @ModelAttribute("user") User user) {
+        User userUpdate = userService.findById(id);
+
+        if (userUpdate != null) {
+            userUpdate.setName(user.getName());
+            userUpdate.setSurname(user.getSurname());
+            userUpdate.setAge(user.getAge());
+            userService.updateUser(userUpdate);
+        }
         return "redirect:/";
     }
 
